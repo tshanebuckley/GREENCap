@@ -202,3 +202,97 @@ def field_or_selection(project = None, item = None):
         return "field"
     else:
         return "neither"
+
+# async method to run a list of api calls
+async def run_pycap_requests(project, function_name, api_calls):
+    print('Trying async {num_of_calls} call(s) ...'.format(num_of_calls=str(len(api_calls))))
+    # get thge list of asynchronous api calls
+    tasks = []
+    call_num = 0
+    for api_call in api_calls:
+        # iterate the call_num
+        call_num = call_num + 1
+        #print(api_call)
+        task = asyncio.ensure_future(async_pycap(project=project, function_name=function_name, call_args=api_call, call_id=call_num))
+        tasks.append(task)
+    # run and return the list of calls
+    response = await asyncio.gather(*tasks)
+    return response
+
+# method that runs the deep merge over a chunk
+def merge_chunk(chunk_as_list_of_dicts):
+    # initialize the return dict as an empty dict
+    chunk_as_dict = dict()
+    # merge all of the dicts in the chunk
+    merge(chunk_as_dict, *chunk_as_list_of_dicts, strategy=Strategy.TYPESAFE_ADDITIVE)
+    # drop duplicated items in any lists
+    for key in chunk_as_dict.keys():
+        # if the value is a list
+        if isinstance(chunk_as_dict[key], list):
+            # drop duplicate items
+            chunk_as_dict[key] = list(set(chunk_as_dict[key]))
+    # return the combined dict
+    return chunk_as_dict
+    
+# TODO: parallelize this
+# TODO: try adding events to extended_by
+# method to create all individual api calls for a selection, follows an "opt-in" approach instead of PyCaps's "opt-out" approach on selection
+def extend_api_calls(project, selection_criteria=None, extended_by=['records'], num_chunks=10): # , 'fields', 'forms'
+    # drop any empty selection criteria
+    selection_criteria = {key: selection_criteria[key] for key in selection_criteria.keys() if selection_criteria[key] != []}
+    # for any selection criteria set to 'all', set to a list of all items for that project
+    # TODO: add some type of schema here
+    # update what is given the selection criteria if 'all' is selected
+    for key in selection_criteria.keys():
+        # if selecting all elements of this
+        if selection_criteria[key] == 'all':
+            # update the selection
+            selection_criteria[key] = getattr(project, key) # NOTE: can add a schema here that attempts this if not found in schema
+    # get the set of criteria to not extend by
+    not_extended_by = set(selection_criteria.keys()) - set(extended_by)
+    # if not_extended_by is empty, then set it to None
+    if len(not_extended_by) == 0:
+        not_extended_by = None
+    # get the criteria not being extended by while removing them from the selection_criteria
+    not_extended_by = {key: selection_criteria.pop(key) for key in not_extended_by}
+    # converts the dict into lists with tags identifying the criteria: from criteria: value to <criteria>_value
+    criteria_list = [[key + '_' + item for item in selection_criteria[key]] for key in selection_criteria.keys()]
+    # gets all permutations to get all individual calls
+    extended_call_list_of_tuples = list(itertools.product(*criteria_list))
+    # method to convert the resultant list of tubles into a list of dicts
+    def crit_tuple_to_dict(this_tuple, extend_to_dicts=None):
+        # get the list of key
+        keys = {x.split('_')[0] for x in this_tuple}
+        # initialize the dicts
+        this_dict = {this_key: [] for this_key in keys}
+        # fill the list of dicts
+        for item in this_tuple:
+            # get the key
+            key = item.split('_')[0]
+            # get the value
+            value = item.replace(key + '_', '', 1)
+            # add the value
+            this_dict[key].append(value)
+        # if there were fields the calls were not extended by
+        if extend_to_dicts != None:
+            this_dict.update(not_extended_by)
+        # return the list of dicts
+        return this_dict
+    # convert the list of lists back into a list of dicts
+    extended_call_list_of_dicts = [crit_tuple_to_dict(this_tuple=x, extend_to_dicts=not_extended_by) for x in extended_call_list_of_tuples]
+    #print(extended_call_list_of_dicts)
+    # method to re-combine the max-width jobs split into n chunks
+    def condense_to_chunks(all_api_calls, num_chunks):
+        # chunk the api_calls list
+        chunked_calls_unmerged = list(chunks(lst=all_api_calls, n=num_chunks))
+        # merge the chunks idividual calls
+        chunked_calls_merged = [merge_chunk(x) for x in chunked_calls_unmerged]
+        # return the api calls
+        return chunked_calls_merged
+    # chunk the calls
+    final_call_list = condense_to_chunks(all_api_calls=extended_call_list_of_dicts, num_chunks=num_chunks)
+    # drop any empty api_calls
+    final_call_list = [x for x in final_call_list if x != {}]
+    #print(final_call_list)
+    # return the list of api requests
+    return final_call_list
