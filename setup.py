@@ -24,6 +24,7 @@ setup(name='greencap',
             "numpy",
             "pandas",
             "asgiref",
+            "multipart",
             "dtale"
       ],
       data_files=[
