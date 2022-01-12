@@ -91,8 +91,8 @@ class REDCapRequest(): # pydantic.BaseModel
             response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
             if '0' not in response_length:
                 # extract the response content
-                #self.content = await asyncio.gather(*tasks)
-                self.content = [await f for f in tqdm.tqdm(asyncio.as_completed(tasks), total=len(tasks))]
+                self.content = await asyncio.gather(*tasks)
+                #self.content = [await f for f in tqdm.tqdm(asyncio.as_completed(tasks), total=len(tasks))]
                 # create the dataframe
                 #self.data = utils.clean_content(df=self.content, )
             else:
