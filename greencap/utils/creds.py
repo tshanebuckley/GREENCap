@@ -23,7 +23,7 @@ class GREENCapCred(pydantic.BaseModel):
     cli: bool
     cred: Optional[REDCapCred]
 
-    if cred:
+    if self.cred:
         name = cred.name
         url = cred.url
         local = cred.local
