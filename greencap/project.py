@@ -136,8 +136,8 @@ class Project:
         # create a PyCap Projects
         #rc = redcap.Project(self.redcap[rc_name].url, self.redcap[rc_name].token)
         # run a selection to grab the list of records
-        #record_list = utils.run_selection(project=rc, fields=self.redcap[rc_name].def_field, syncronous=True)
-        record_list = utils.run_selection(project=rc_name, fields=rc_name.def_field, syncronous=True)
+        #record_list = gc_utils.run_selection(project=rc, fields=self.redcap[rc_name].def_field, syncronous=True)
+        record_list = gc_utils.run_selection(project=rc_name, fields=rc_name.def_field, syncronous=True)
         # return the records
         return record_list
 
@@ -195,7 +195,7 @@ class Project:
         if extended_by == None:
             extended_by = self.extended_by
         # get the api calls
-        api_calls = utils.extend_api_calls(self.redcap[rc_name], selection_criteria=selection_criteria, extended_by=extended_by, num_chunks=num_chunks)
+        api_calls = gc_utils.extend_api_calls(self.redcap[rc_name], selection_criteria=selection_criteria, extended_by=extended_by, num_chunks=num_chunks)
         # log number of calls
         print("Executing {n} requests...".format(n=str(len(api_calls))))
         # initialize a Payload object to save the payloads to
@@ -213,7 +213,7 @@ class Project:
         # save this new Payload object within the class
         self._payloads[_id] = ploads
         # determine if the project is longitudinal
-        long = utils.is_longitudinal(self.redcap['bsocial'])
+        long = gc_utils.is_longitudinal(self.redcap['bsocial'])
         # create the request
         req = REDCapRequest(_id=_id, payloads=ploads, longitudinal=long, arms=None, events=None, sleep_time=sleep_time)
         # submit the request
