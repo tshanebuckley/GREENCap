@@ -97,20 +97,21 @@ class REDCapRequest(): # pydantic.BaseModel
         response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
         print(response_length)
         # verify the returned content
-        try:
-            #response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
-            # effectively, if any response have length of 0 the data fetch has failed.
-            # NOTE: should also add logic for anything beyond a <200> http return.
-            #if '0' not in response_length:
-            # extract the response content
-            self.content = await asyncio.gather(*read_tasks)
-            #self.content = [await f for f in tqdm.tqdm(asyncio.as_completed(read_tasks), total=len(read_tasks))]
-            # create the dataframe
-            #self.data = utils.clean_content(df=self.content, )
-            #else:
-            #    self.content = []
-        # otherwise
-        except:
-            print("Request failed: likely requires smaller chunks.")
-            self.content = []
+        #try:
+        #    #response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
+        #    # effectively, if any response have length of 0 the data fetch has failed.
+        #    # NOTE: should also add logic for anything beyond a <200> http return.
+        #    #if '0' not in response_length:
+        #    # extract the response content
+        #    self.content = await asyncio.gather(*read_tasks)
+        #    #self.content = [await f for f in tqdm.tqdm(asyncio.as_completed(read_tasks), total=len(read_tasks))]
+        #    # create the dataframe
+        #    #self.data = utils.clean_content(df=self.content, )
+        #    #else:
+        #    #    self.content = []
+        ## otherwise
+        #except:
+        #    print("Request failed: likely requires smaller chunks.")
+        #    self.content = []
+        self.content[resp.content for resp in self.response]
         return
