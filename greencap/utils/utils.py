@@ -296,3 +296,30 @@ def extend_api_calls(project, selection_criteria=None, extended_by=['records'], 
     #print(final_call_list)
     # return the list of api requests
     return final_call_list
+
+# method to retun if a project has events
+def has_events(project):
+    # if the project has no events, return False
+    if len(project.events) == 0:
+        return False
+    # otherwise, return True
+    else:
+        return True
+
+# method to retun if a project has arms
+def has_arms(project):
+    # if the project has no arms, return False
+    if len(project.arm_nums) == 0:
+        return False
+    # otherwise, return True
+    else:
+        return True
+
+# method to return if a project is longitudinal or not
+def is_longitudinal(project):
+    # if the project has events or arms, return True
+    if has_events(project) or has_arms(project):
+        return True
+    # otherwise, return false
+    else:
+        return False
