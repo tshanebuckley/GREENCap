@@ -23,11 +23,13 @@ class GREENCapCred(pydantic.BaseModel):
     cli: bool
     cred: Optional[REDCapCred]
 
-    if self.cred:
-        name = cred.name
-        url = cred.url
-        local = cred.local
-        cli = cred.cli
+    # Commented out for now, will want to add logic
+    # to overwrite fields if given by a credentials object.
+    #if self.cred:
+    #    name = cred.name
+    #    url = cred.url
+    #    local = cred.local
+    #    cli = cred.cli
 
 
     @pydantic.root_validator(pre=True)
