@@ -1,4 +1,7 @@
 from setuptools import setup, find_packages
+import os
+
+USER_PATH = os.path.expanduser('~')
 
 setup(name='greencap',
       version='0.1',
@@ -28,11 +31,11 @@ setup(name='greencap',
             "dtale"
       ],
       data_files=[
-            ('~/.greencap', ['greencap_config.yaml']),
-            ('~/.greencap/projects', []),
-            ('~/.greencap/users', []),
-            ('~/.greencap/groups', []),
-            ('~greencap/shiny', ['open_dtale.py', 'redcap_webapp.R'])
+            ('{HOME}/.greencap'.format(HOME=USER_PATH), ['greencap_config.yaml']),
+            ('{HOME}/.greencap/projects'.format(HOME=USER_PATH), []),
+            ('{HOME}/.greencap/users'.format(HOME=USER_PATH), []),
+            ('{HOME}/.greencap/groups'.format(HOME=USER_PATH), []),
+            ('{HOME}/greencap/shiny'.format(HOME=USER_PATH), ['open_dtale.py', 'redcap_webapp.R'])
       ],
       zip_safe=False
       )
