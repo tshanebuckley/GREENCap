@@ -40,10 +40,16 @@ class REDCapRequest(): # pydantic.BaseModel
         # sub function to apply a sleep
         # TODO: use same logic as below to read streams in the same thread as the request
         async def run_fetch(sleep_time, my_coroutine):
+            # sleep
             await(asyncio.sleep(sleep_time))
-            r = await my_coroutine
-            #print(r)
-            return r
+            # perform the fetch
+            fetch_resp = await my_coroutine
+            # extract the content from the StreamReader
+            streamed_content = await fetch_resp.content.read()
+            # replace the StreamReader with its content
+            fetch_resp.content = streamed_content
+            #print(fetch_resp)
+            return fetch_resp
         # set the task list
         request_tasks = list()
         # for each payload given
