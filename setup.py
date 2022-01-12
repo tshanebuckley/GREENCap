@@ -12,6 +12,13 @@ setup(name='greencap',
       packages=['greencap'],
       include_package_data=True,
       #packages=find_packages(),
-      install_requires=[],
+      install_requires=[
+            "pycap",
+            "fastapi",
+            "pydantic",
+            "pyyaml",
+            "aiohttp",
+            "tqdm"
+      ],
       zip_safe=False
       )
