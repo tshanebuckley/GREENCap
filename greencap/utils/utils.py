@@ -219,6 +219,14 @@ async def run_pycap_requests(project, function_name, api_calls):
     response = await asyncio.gather(*tasks)
     return response
 
+# method that generates chunks
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    #for i in range(0, len(lst), n): -> by a chunk-size n
+    #    yield lst[i:i + n]
+    for i in range(0, n): # number of chunks
+        yield lst[i::n]
+
 # method that runs the deep merge over a chunk
 def merge_chunk(chunk_as_list_of_dicts):
     # initialize the return dict as an empty dict
