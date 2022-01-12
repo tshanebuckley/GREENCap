@@ -5,7 +5,7 @@ setup(name='greencap',
       description='GREENCap: Asynchronous requests and middleware API for REDCap.',
       url='https://github.com/tshanebuckley/GREENCap',
       author='Maintainer: Shane Buckley',
-      author_email='buckleyts3@email.unc.edu',
+      author_email='tshanebuckley@gmail.com',
       #license='MIT',
       python_requires='>=3.6',
       #package_dir={'': 'GREENCap/greencap'},
@@ -24,6 +24,12 @@ setup(name='greencap',
             "numpy",
             "pandas",
             "asgiref"
+      ],
+      data_files=[
+            ('~/.greencap', ['greencap_config.yaml']),
+            ('~/.greencap/projects', []),
+            ('~/.greencap/users', []),
+            ('~/.greencap/groups', [])
       ],
       zip_safe=False
       )
