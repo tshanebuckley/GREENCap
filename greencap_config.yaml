@@ -7,5 +7,5 @@ gui_port: 1212
 dtale_url: 127.0.0.1
 dtale_port: 8383
 num_chunks: 20
-extend_by:
+extended_by:
   - records
