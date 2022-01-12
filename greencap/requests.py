@@ -45,7 +45,7 @@ class REDCapRequest(): # pydantic.BaseModel
             #print(r)
             return r
         # set the task list
-        tasks = list()
+        request_tasks = list()
         # for each payload given
         for pload in self.payloads:
             # create a task
