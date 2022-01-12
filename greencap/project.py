@@ -197,7 +197,7 @@ class Project:
         if extended_by == None:
             extended_by = self.extended_by
         # log that the payloads are being generated
-        print("Generating payloads.")
+        print("Generating payload(s).")
         # get the api calls
         api_calls = gc_utils.extend_api_calls(self.redcap[rc_name], selection_criteria=selection_criteria, extended_by=extended_by, num_chunks=num_chunks)
         # initialize a Payload object to save the payloads to
@@ -209,7 +209,7 @@ class Project:
             # generate and save the payloads as a Payload object
             ploads.append(pload)
         # log number of calls
-        print("Executing {n} requests...".format(n=str(len(api_calls))))
+        print("Executing {n} request(s)...".format(n=str(len(api_calls))))
         # run the payload generation
         ploads = await asyncio.gather(*ploads)
         # get an id for the payload/request
