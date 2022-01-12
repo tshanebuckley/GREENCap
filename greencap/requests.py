@@ -94,6 +94,8 @@ class REDCapRequest(): # pydantic.BaseModel
                 print("Response {r} returned with no content.".format(r = resp))
         print("Read tasks:")
         print(len(read_tasks))
+        response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
+        print(response_length)
         # verify the returned content
         try:
             #response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
