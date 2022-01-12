@@ -113,3 +113,4 @@ class REDCapRequest(): # pydantic.BaseModel
         except:
             print("Request failed: likely requires smaller chunks.")
             self.content = []
+        return
