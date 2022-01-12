@@ -88,8 +88,9 @@ class REDCapRequest(): # pydantic.BaseModel
             read_tasks.append(read_task)
         # verify the returned content
         try:
-            print("In the try")
             response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
+            # effectively, if any response have length of 0 the data fetch has failed.
+            # NOTE: should also add logic for anything beyond a <200> http return.
             if '0' not in response_length:
                 # extract the response content
                 self.content = await asyncio.gather(*read_tasks)
@@ -98,7 +99,6 @@ class REDCapRequest(): # pydantic.BaseModel
                 #self.data = utils.clean_content(df=self.content, )
             else:
                 self.content = []
-            print(self.content)
         # otherwise
         except:
             print("Request failed: likely requires smaller chunks.")
