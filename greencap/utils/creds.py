@@ -1,6 +1,7 @@
 import pydantic
 from typing import Optional
 import json
+import pathlib
 
 class REDCapCred(pydantic.BaseModel):
     '''
@@ -30,7 +31,6 @@ class GREENCapCred(pydantic.BaseModel):
     #    url = cred.url
     #    local = cred.local
     #    cli = cred.cli
-
 
     @pydantic.root_validator(pre=True)
     @classmethod
