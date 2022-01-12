@@ -23,13 +23,15 @@ setup(name='greencap',
             "configparser",
             "numpy",
             "pandas",
-            "asgiref"
+            "asgiref",
+            "dtale"
       ],
       data_files=[
             ('~/.greencap', ['greencap_config.yaml']),
             ('~/.greencap/projects', []),
             ('~/.greencap/users', []),
-            ('~/.greencap/groups', [])
+            ('~/.greencap/groups', []),
+            ('~greencap/shiny', ['open_dtale.py', 'redcap_webapp.R'])
       ],
       zip_safe=False
       )
