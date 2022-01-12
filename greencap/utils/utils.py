@@ -134,7 +134,7 @@ def run_selection(project = None, records: Optional[str] = "", arms: Optional[st
         # convert back to json and return
         df = df.to_json()
     df = json.loads(df)
-    print(df)
+    #print(df)
     return df
 
 # method to drop arms from a returned api call (dict)
