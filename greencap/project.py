@@ -16,7 +16,7 @@ from typing import Optional, List
 from asgiref.sync import sync_to_async, async_to_sync
 #from .async_wrapper import for_all_methods_by_prefix
 #from .requests import GCRequest
-#import .utils
+import greencap.utils as utils
 import getpass
 
 # method to create a redcap project
