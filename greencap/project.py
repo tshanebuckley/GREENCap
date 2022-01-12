@@ -221,7 +221,7 @@ class Project:
         # submit the request
         await req.run() # response =
         # log that the calls have finished
-        print("{n} requests have finished.".format(n=str(len(req.content))))
+        print("{n} request(s) have finished.".format(n=str(len(req.content))))
         # drop the payload from the _payloads dict
         #del self._payloads[_id]
         # return the response
