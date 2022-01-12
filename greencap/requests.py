@@ -76,6 +76,9 @@ class REDCapRequest(): # pydantic.BaseModel
         self.response_time = str(self.response_time)
         self.call_time = self.call_time.total_seconds()
         #print(self.response)
+        print("Sleeping")
+        await(asyncio.sleep(3))
+        print("Woke up.")
         # set a content list
         read_tasks = list()
         # extract the content from the response into a variable
@@ -88,7 +91,7 @@ class REDCapRequest(): # pydantic.BaseModel
                 # append to the list
                 read_tasks.append(read_task)
             except:
-                print("Response {r} returned with not content.".format(r = resp))
+                print("Response {r} returned with no content.".format(r = resp))
         # verify the returned content
         try:
             response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
