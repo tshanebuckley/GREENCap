@@ -31,11 +31,11 @@ setup(name='greencap',
             "dtale"
       ],
       data_files=[
-            ('{HOME}/.greencap'.format(HOME=USER_PATH), ['greencap_config.yaml']),
-            ('{HOME}/.greencap/projects'.format(HOME=USER_PATH), []),
-            ('{HOME}/.greencap/users'.format(HOME=USER_PATH), []),
-            ('{HOME}/.greencap/groups'.format(HOME=USER_PATH), []),
-            ('{HOME}/.greencap/shiny'.format(HOME=USER_PATH), ['open_dtale.py', 'redcap_webapp.R'])
+            ('/{HOME}/.greencap'.format(HOME=USER_PATH), ['greencap_config.yaml']),
+            ('/{HOME}/.greencap/projects'.format(HOME=USER_PATH), []),
+            ('/{HOME}/.greencap/users'.format(HOME=USER_PATH), []),
+            ('/{HOME}/.greencap/groups'.format(HOME=USER_PATH), []),
+            ('/{HOME}/.greencap/shiny'.format(HOME=USER_PATH), ['open_dtale.py', 'redcap_webapp.R'])
       ],
       zip_safe=False
       )
