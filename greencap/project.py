@@ -26,7 +26,7 @@ def create_redcap_project(name=None):
     return REDCapProject(**creds)
 
 
-def user_project(name=None, url=None, token=None, cli=FALSE, local=TRUE):
+def user_project(name=None, url=None, token=None, cli=False, local=True):
     # NOTE: could make this a sub-function for parsing inputs
     # if the name is None and cli is true, use getuser
     if name == None:
