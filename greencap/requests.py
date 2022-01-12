@@ -2,6 +2,7 @@ import asyncio
 import redcap
 import aiohttp
 from datetime import datetime
+import tqdm
 
 # TODO: come back and make this verify with pydantic
 # redcap payload class
