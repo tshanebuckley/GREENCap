@@ -1,6 +1,7 @@
 import pydantic
 from typing import Optional
 import json
+import yaml
 import pathlib
 
 class REDCapCred(pydantic.BaseModel):
