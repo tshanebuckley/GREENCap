@@ -84,9 +84,9 @@ class REDCapRequest(): # pydantic.BaseModel
         # extract the content from the response into a variable
         for resp in self.response:
             # if the resp yielded content
-            if resp.content._size > 0:
-                # create a task
-                read_task = asyncio.ensure_future(resp.content.read())
+            #if resp.content._size > 0:
+            #    # create a task
+            read_task = asyncio.ensure_future(resp.content.read())
             try:
                 # append to the list
                 read_tasks.append(read_task)
