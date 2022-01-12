@@ -84,8 +84,11 @@ class REDCapRequest(): # pydantic.BaseModel
             if resp.content._size > 0:
                 # create a task
                 read_task = asyncio.ensure_future(resp.content.read())
-            # append to the list
-            read_tasks.append(read_task)
+            try:
+                # append to the list
+                read_tasks.append(read_task)
+            except:
+                print("Response {r} returned with not content.".format(r = resp))
         # verify the returned content
         try:
             response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
