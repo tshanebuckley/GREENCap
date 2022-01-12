@@ -33,7 +33,7 @@ import asyncio
 gc = greencap.Project()
 # add a project (saved under ~/.greencap/projects/my_project.json where "my_project" is the name of your REDCap Project)
 # my_project.json is a simple json file that holds your url and api token
-gc.add_project('bsocial')
+gc.add_project('my_project')
 # fecth your data asynchronously
 r = asyncio.run(gc.exec_request(method='POST', selection_criteria={'fields': {'field_name'}}, rc_name='my_project', func_name='export_records'))
 ```
