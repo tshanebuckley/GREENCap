@@ -22,7 +22,8 @@ setup(name='greencap',
             "mergedeep",
             "configparser",
             "numpy",
-            "pandas"
+            "pandas",
+            "asgiref"
       ],
       zip_safe=False
       )
