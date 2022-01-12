@@ -257,12 +257,15 @@ def extend_api_calls(project, selection_criteria=None, extended_by=['records'], 
             # update the selection
             selection_criteria[key] = getattr(project, key) # NOTE: can add a schema here that attempts this if not found in schema
     # get the set of criteria to not extend by
-    not_extended_by = set(selection_criteria.keys()) - set(extended_by)
+    try:
+        not_extended_by = set(selection_criteria.keys()) - set(extended_by)
+         # get the criteria not being extended by while removing them from the selection_criteria
+        not_extended_by = {key: selection_criteria.pop(key) for key in not_extended_by}
+    except:
+        not_extended_by = set()
     # if not_extended_by is empty, then set it to None
     if len(not_extended_by) == 0:
         not_extended_by = None
-    # get the criteria not being extended by while removing them from the selection_criteria
-    not_extended_by = {key: selection_criteria.pop(key) for key in not_extended_by}
     # converts the dict into lists with tags identifying the criteria: from criteria: value to <criteria>_value
     criteria_list = [[key + '_' + item for item in selection_criteria[key]] for key in selection_criteria.keys()]
     # gets all permutations to get all individual calls
