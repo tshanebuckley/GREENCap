@@ -1,7 +1,7 @@
 import asyncio
 import redcap
 import aiohttp
-import datetime
+from datetime import datetime
 
 # TODO: come back and make this verify with pydantic
 # redcap payload class
