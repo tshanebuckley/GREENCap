@@ -18,6 +18,7 @@ from asgiref.sync import sync_to_async, async_to_sync
 #from .requests import GCRequest
 from greencap.utils import utils as gc_utils
 from greencap.utils import creds as gc_creds
+from greencap.requests import REDCapRequest
 import getpass
 
 # method to create a redcap project
