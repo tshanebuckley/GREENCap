@@ -1,0 +1,8 @@
+api_url: 127.0.0.1
+api_port: 4747
+server_url: 127.0.0.1
+server_port: 3838
+gui_url: 127.0.0.1
+gui_port: 1212
+dtale_url: 127.0.0.1
+dtale_port: 8383
