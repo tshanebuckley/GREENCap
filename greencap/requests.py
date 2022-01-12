@@ -50,9 +50,9 @@ class REDCapRequest(): # pydantic.BaseModel
         for pload in self.payloads:
             # create a task
             # NOTE: need a method to convert payloads to resuests so that they can be added to the list of tasks
-            task = asyncio.ensure_future(run_fetch(self.sleep_time, self.session.request(**pload)))
+            request_task = asyncio.ensure_future(run_fetch(self.sleep_time, self.session.request(**pload)))
             # append that task to the list of tasks
-            tasks.append(task)
+            request_tasks.append(request_task)
         # add a progress bar
         #prog = [await f for f in tqdm.tqdm(asyncio.as_completed(tasks), total=len(tasks))]
         # set the request_time
@@ -60,8 +60,8 @@ class REDCapRequest(): # pydantic.BaseModel
         # set the status to 'running'
         self.status = 'running'
         # execute the request with progress bar
-        #self.response = await asyncio.gather(*tasks)
-        self.response = [await f for f in tqdm.tqdm(asyncio.as_completed(tasks), total=len(tasks))]
+        self.response = await asyncio.gather(*request_tasks)
+        #self.response = [await f for f in tqdm.tqdm(asyncio.as_completed(request_tasks), total=len(request_tasks))]
         # set the response time
         self.response_time = datetime.now()
         # set the status to 'completed'
@@ -77,23 +77,23 @@ class REDCapRequest(): # pydantic.BaseModel
         self.call_time = self.call_time.total_seconds()
         #print(self.response)
         # set a content list
-        tasks = list()
+        read_tasks = list()
         # extract the content from the response into a variable
         for resp in self.response:
             # if the resp yielded content
             if resp.content._size > 0:
                 # create a task
-                task = asyncio.ensure_future(resp.content.read())
+                read_task = asyncio.ensure_future(resp.content.read())
             # append to the list
-            tasks.append(task)
+            read_tasks.append(read_task)
         # verify the returned content
         try:
             print("In the try")
             response_length =  [x._cache['headers']['Content-Length'] for x in self.response]
             if '0' not in response_length:
                 # extract the response content
-                #self.content = await asyncio.gather(*tasks)
-                self.content = [await f for f in tqdm.tqdm(asyncio.as_completed(tasks), total=len(tasks))]
+                self.content = await asyncio.gather(*read_tasks)
+                #self.content = [await f for f in tqdm.tqdm(asyncio.as_completed(read_tasks), total=len(read_tasks))]
                 # create the dataframe
                 #self.data = utils.clean_content(df=self.content, )
             else:
