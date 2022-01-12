@@ -18,7 +18,11 @@ setup(name='greencap',
             "pydantic",
             "pyyaml",
             "aiohttp",
-            "tqdm"
+            "tqdm",
+            "mergedeep",
+            "configparser",
+            "numpy",
+            "pandas"
       ],
       zip_safe=False
       )
