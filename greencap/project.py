@@ -17,11 +17,12 @@ from asgiref.sync import sync_to_async, async_to_sync
 #from .async_wrapper import for_all_methods_by_prefix
 #from .requests import GCRequest
 from greencap.utils import utils as gc_utils
+from greencap.utils import creds as gc_creds
 import getpass
 
 # method to create a redcap project
 def create_redcap_project(name=None):
-    creds = gc_utils.get_project_config(project = name)
+    creds = gc_creds.get_project_config(project = name)
     creds["name"] = name
     return REDCapProject(**creds)
 
@@ -85,7 +86,7 @@ class Project:
         if use_cfg:
             # try to load the yaml cfg
             try:
-                self.cfg = gc_utils.get_greencap_config()
+                self.cfg = gc_creds.get_greencap_config()
             except:
                 print("No config file found.")
             # initialize the base number of chunks for api calls
