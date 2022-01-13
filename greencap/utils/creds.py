@@ -3,6 +3,9 @@ from typing import Optional
 import json
 import yaml
 import pathlib
+import asyncio
+import aiohttp
+import aiofiles
 
 class REDCapCred(pydantic.BaseModel):
     '''
@@ -53,12 +56,20 @@ class GREENCapCred(pydantic.BaseModel):
 def get_greencap_config():
     file_path = str(pathlib.Path.home()) + '/.greencap/greencap_config.yaml'
     # open the file
-    try:
-        f = open(file_path,)
-    except:
-        f = open(file_path.replace('.yaml', '.yml'))
+    f = open(file_path,)
     # load the yaml as a dict
     d = yaml.load(f, Loader=yaml.FullLoader)
+    # return the dict
+    return(d)
+
+# convenience function for getting the greencap config file data asynchronously
+async def async_get_greencap_config():
+    file_path = str(aiopath.AsyncPath.home()) + '/.greencap/greencap_config.yaml'
+    # open the file
+    async with aiofiles.open(file_path, mode='r') as f:
+        content = await f.read()
+    # load the yaml as a dict
+    d = yaml.load(content, Loader=yaml.FullLoader)
     # return the dict
     return(d)
 
@@ -69,5 +80,16 @@ def get_project_config(project = None):
     f = open(file_path,)
     # load the json as a dict
     d = json.load(f)
+    # return the dict
+    return(d)
+
+# convenience function for getting the config file data asynchronously
+def async_get_project_config(project = None):
+    file_path = str(aiopath.AsyncPath.home()) + '/.greencap/projects/{proj}.json'.format(proj=project)
+    # open the file
+    async with aiofiles.open(file_path, mode='r') as f:
+        content = await f.read()
+    # load the json as a dict
+    d = json.loads(content)
     # return the dict
     return(d)
