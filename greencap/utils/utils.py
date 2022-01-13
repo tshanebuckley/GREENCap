@@ -251,7 +251,7 @@ def merge_chunk(chunk_as_list_of_dicts):
 # method to create all individual api calls for a selection, follows an "opt-in" approach instead of PyCaps's "opt-out" approach on selection
 def extend_api_calls(project, selection_criteria=None, extended_by=['records'], num_chunks=10): # , 'fields', 'forms'
     # drop any empty selection criteria
-    selection_criteria = {key: selection_criteria[key] for key in selection_criteria.keys() if selection_criteria[key] != []}
+    selection_criteria = {key: selection_criteria[key] for key in selection_criteria.keys() if selection_criteria[key] != [] and selection_criteria[key] != None}
     # for any selection criteria set to 'all', set to a list of all items for that project
     # TODO: add some type of schema here
     # update what is given the selection criteria if 'all' is selected
