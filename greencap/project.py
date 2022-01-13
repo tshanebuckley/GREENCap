@@ -204,6 +204,9 @@ class Project:
         for key in func_defaults:
             if key not in selection_criteria.keys():
                 selection_criteria[key] = func_defaults[key]
+        # if no record names are given, get the record names
+        if selection_criteria['records'] == None:
+            selection_criteria['records'] = await async_get_records(rc_name)
         # log that the payloads are being generated
         print("Generating payload(s).")
         # get the api calls
