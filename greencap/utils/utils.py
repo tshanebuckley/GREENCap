@@ -63,6 +63,8 @@ def run_selection(project = None, records: Optional[str] = "", arms: Optional[st
         if chosen_fields == [] and chosen_forms == []:
             # get all of the fields
             chosen_fields = project.field_names
+        print("CHOSEN RECORDS:")
+        print(chosen_records)
         # get the kwargs
         selection_criteria = {"records": chosen_records, "fields": chosen_fields, "forms": chosen_forms}
         # get all of the possible single item api calls
