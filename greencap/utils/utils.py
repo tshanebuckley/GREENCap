@@ -12,6 +12,8 @@ import os
 import sys
 import threading
 import asyncio
+import aiohttp
+import aiofiles
 import redcap
 import contextlib
 import itertools
