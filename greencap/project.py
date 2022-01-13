@@ -7,6 +7,8 @@ import json
 import redcap
 import asyncio
 import aiohttp
+import aiofiles
+import aiopath
 import pydantic
 import tqdm
 from uuid import uuid4
@@ -14,8 +16,6 @@ from datetime import date, datetime, time, timedelta
 from requests import RequestException, Session
 from typing import Optional, List
 from asgiref.sync import sync_to_async, async_to_sync
-#from .async_wrapper import for_all_methods_by_prefix
-#from .requests import GCRequest
 from greencap.utils import utils as gc_utils
 from greencap.utils import creds as gc_creds
 from greencap.requests import REDCapRequest
@@ -196,6 +196,8 @@ class Project:
             num_chunks = self.num_chunks
         if extended_by == None:
             extended_by = self.extended_by
+        # get the required selection_criteria for the func_name given
+        
         # log that the payloads are being generated
         print("Generating payload(s).")
         # get the api calls
