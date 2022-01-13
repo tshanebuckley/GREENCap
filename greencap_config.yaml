@@ -11,6 +11,7 @@ extended_by:
   - records
 redcap:
   export_records:
-    records: null
-    forms: null
-    fields: null
+    defaults:
+      records: null
+      forms: null
+      fields: null
