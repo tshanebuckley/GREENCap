@@ -19,6 +19,7 @@ import contextlib
 import itertools
 import requests
 import pathlib
+from greencap.utils import creds as gc_creds
 
 # covenience function for prunning a parsed selection
 def run_selection(project = None, records: Optional[str] = "", arms: Optional[str] = "", events: Optional[str] = "", forms: Optional[str] = "", fields: Optional[str] = "", syncronous=False, num_chunks=50):
@@ -338,3 +339,15 @@ def is_longitudinal(project):
     # otherwise, return false
     else:
         return False
+
+# method to get the records for a project asynchronously
+async def async_get_records(rc_name):
+    # get the credentials
+    creds = await async_get_project_config(project = rc_name)
+    # get the defining field of the project
+    def_field = creds['def_field']
+    # run a basic request to fetch these ids
+    
+    # clean the result into a list
+    
+    # return the resultant list
