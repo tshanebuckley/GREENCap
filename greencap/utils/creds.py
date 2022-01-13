@@ -84,7 +84,7 @@ def get_project_config(project = None):
     return(d)
 
 # convenience function for getting the config file data asynchronously
-def async_get_project_config(project = None):
+async def async_get_project_config(project = None):
     file_path = str(aiopath.AsyncPath.home()) + '/.greencap/projects/{proj}.json'.format(proj=project)
     # open the file
     async with aiofiles.open(file_path, mode='r') as f:
