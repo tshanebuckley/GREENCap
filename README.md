@@ -43,6 +43,7 @@ r = asyncio.run(gc.exec_request(method='POST', selection_criteria={'fields': {'f
 ```json
 {
   "url": "your url",
-  "token": "your api token"
+  "token": "your api token",
+  "def_field": "project's id defining field"
 }
 ```
