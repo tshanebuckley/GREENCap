@@ -56,7 +56,7 @@ def run_selection(project = None, records: Optional[str] = "", arms: Optional[st
     # if running an asynchronous call
     if syncronous == False:
         # if records, fields, or forms were not selected, "opt-in" for all of that criteria
-        # NOTE: REDCap's API opts-in by default, but we must set these criteria manually to setup asynchronous calls
+        # NOTE: PyCap opts-in by default, but we must set these criteria manually to setup asynchronous calls
         if chosen_records == []:
             # get the records
             chosen_records = run_selection(project=project, fields=project.def_field, syncronous=True)
@@ -76,7 +76,7 @@ def run_selection(project = None, records: Optional[str] = "", arms: Optional[st
         #print(results[0])
         # rename to match downstream logic
         df = results
-    # if running a single call
+    # if a syncronous api call is desired single call
     elif syncronous == True:
         # pull data using PyCap, convert to a pandas dataframe: will eventually be deprecated by async records call
         df = project.export_records(records=chosen_records, fields=chosen_fields, forms=chosen_forms)
