@@ -9,3 +9,8 @@ dtale_port: 8383
 num_chunks: 20
 extended_by:
   - records
+redcap:
+  export_records:
+    records: null
+    forms: null
+    fields: null
