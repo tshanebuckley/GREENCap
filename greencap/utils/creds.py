@@ -6,6 +6,7 @@ import pathlib
 import asyncio
 import aiohttp
 import aiofiles
+import aiopath
 
 class REDCapCred(pydantic.BaseModel):
     '''
