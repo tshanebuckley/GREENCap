@@ -197,7 +197,13 @@ class Project:
         if extended_by == None:
             extended_by = self.extended_by
         # get the required selection_criteria for the func_name given
-        
+        gc_cfg = gc.async_get_greencap_config()
+        # select the redcap function defaults arguments
+        func_defaults = gc_cfg['redcap'][func_name]['defaults']
+        # add any keys from the config if not in selection criteria
+        for key in func_defaults:
+            if key not in selection_criteria.keys():
+                selection_criteria[key] = func_defaults[key]
         # log that the payloads are being generated
         print("Generating payload(s).")
         # get the api calls
