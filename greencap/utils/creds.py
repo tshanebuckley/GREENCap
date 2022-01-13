@@ -65,7 +65,8 @@ def get_greencap_config():
 
 # convenience function for getting the greencap config file data asynchronously
 async def async_get_greencap_config():
-    file_path = str(aiopath.AsyncPath.home()) + '/.greencap/greencap_config.yaml'
+    HOME = await aiopath.AsyncPath.home()
+    file_path = str(HOME) + '/.greencap/greencap_config.yaml'
     # open the file
     async with aiofiles.open(file_path, mode='r') as f:
         content = await f.read()
@@ -86,7 +87,8 @@ def get_project_config(project = None):
 
 # convenience function for getting the config file data asynchronously
 async def async_get_project_config(project = None):
-    file_path = str(aiopath.AsyncPath.home()) + '/.greencap/projects/{proj}.json'.format(proj=project)
+    HOME = await aiopath.AsyncPath.home()
+    file_path = str(HOME) + '/.greencap/projects/{proj}.json'.format(proj=project)
     # open the file
     async with aiofiles.open(file_path, mode='r') as f:
         content = await f.read()
