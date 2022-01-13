@@ -190,14 +190,14 @@ class Project:
         return request_args
 
     # gets the payloads by extending to all possible calls and then chunking them
-    async def exec_request(self, method, selection_criteria=None, extended_by=None, num_chunks=None, rc_name=None, func_name=None, sleep_time=0):
+    async def exec_request(self, method, selection_criteria=dict(), extended_by=None, num_chunks=None, rc_name=None, func_name=None, sleep_time=0):
         # set some variables defined by the object if not set by the function
         if num_chunks == None:
             num_chunks = self.num_chunks
         if extended_by == None:
             extended_by = self.extended_by
         # get the required selection_criteria for the func_name given
-        gc_cfg = gc.async_get_greencap_config()
+        gc_cfg = gc_creds.async_get_greencap_config()
         # select the redcap function defaults arguments
         func_defaults = gc_cfg['redcap'][func_name]['defaults']
         # add any keys from the config if not in selection criteria
