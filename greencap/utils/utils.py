@@ -360,8 +360,8 @@ async def async_get_records(rc_name):
         'returnFormat': 'json',
     }
     # run a basic request to fetch these ids
-    async with aiohttp.ClientSession(creds['url'], data=payload) as session:
-        async with session.post(data=payload) as response:
+    async with aiohttp.ClientSession() as session:
+        async with session.post(creds['url'], data=payload) as response:
             resp = await response.text()
             print(response)
     # clean the result into a list
