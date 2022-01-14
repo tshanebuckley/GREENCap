@@ -84,3 +84,4 @@ class REDCapRequest(): # pydantic.BaseModel
         self.response_time = str(self.response_time)
         self.call_time = self.call_time.total_seconds()
         self.content = [resp.content for resp in self.response]
+        print("Request finished at ", datetime.now())
