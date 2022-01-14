@@ -366,5 +366,7 @@ async def async_get_records(rc_name):
             print(response)
     # clean the result into a list
     resp_dict = json.loads(resp)
+    # get the ids only from the response
+    records = [x['registration_redcapid'] for x in d]
     # return the resultant list
-    return resp_dict
+    return records
