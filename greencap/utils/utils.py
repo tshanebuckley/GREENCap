@@ -344,10 +344,27 @@ def is_longitudinal(project):
 async def async_get_records(rc_name):
     # get the credentials
     creds = await async_get_project_config(project = rc_name)
-    # get the defining field of the project
-    def_field = creds['def_field']
+    # generate the payload
+    payload = {
+        'token': creds['token'],
+        'content': 'record',
+        'format': 'json',
+        'type': 'flat',
+        'csvDelimiter': '',
+        'fields[0]': creds['def_field'],
+        'rawOrLabel': 'raw',
+        'rawOrLabelHeaders': 'raw',
+        'exportCheckboxLabel': 'false',
+        'exportSurveyFields': 'false',
+        'exportDataAccessGroups': 'false',
+        'returnFormat': 'json',
+    }
     # run a basic request to fetch these ids
-    
+    async with aiohttp.ClientSession(creds['url'], data=payload) as session:
+        async with session.post(data=payload) as response:
+            resp = await response.text()
+            print(response)
     # clean the result into a list
-    
+    resp_dict = json.loads(resp)
     # return the resultant list
+    return resp_dict
