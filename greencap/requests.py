@@ -37,11 +37,13 @@ class REDCapRequest(): # pydantic.BaseModel
         self.creation_time = datetime.now()
         # save the sleep time used per execution of each task
         self.sleep_time = sleep_time
+        # set the completion time as None
+        self.completion_time = None
 
     async def run(self):
         # sub function to apply a sleep
         # TODO: use same logic as below to read streams in the same thread as the request
-        async def run_fetch(sleep_time, my_coroutine):
+        async def run_fetch(sleep_time, my_coroutine, chunk_num):
             # sleep
             await(asyncio.sleep(sleep_time))
             # perform the fetch
@@ -50,19 +52,23 @@ class REDCapRequest(): # pydantic.BaseModel
             streamed_content = await fetch_resp.content.read()
             # replace the StreamReader with its content
             fetch_resp.content = streamed_content
-            #print(fetch_resp)
+            # log the chunk completion
+            print("Chunk {c} completed at {t}".format(c=chunk_num, t=str(datetime.now())))
             return fetch_resp
         # set the task list
         request_tasks = list()
+        # initialize the first chunk as number 0
+        num = 0
         # for each payload given
         for pload in self.payloads:
+            # iterate the chunk number
+            num = num + 1
+            # NOTE: need a method to convert payloads to requests so that they can be added to the list of tasks
             # create a task
-            # NOTE: need a method to convert payloads to resuests so that they can be added to the list of tasks
-            request_task = asyncio.ensure_future(run_fetch(self.sleep_time, self.session.request(**pload)))
+            request_task = asyncio.ensure_future(run_fetch(self.sleep_time, self.session.request(**pload), chunk_num=num))
             # append that task to the list of tasks
             request_tasks.append(request_task)
         # add a progress bar
-        #prog = [await f for f in tqdm.tqdm(asyncio.as_completed(tasks), total=len(tasks))]
         # set the request_time
         self.request_time = datetime.now()
         # set the status to 'running'
@@ -84,4 +90,5 @@ class REDCapRequest(): # pydantic.BaseModel
         self.response_time = str(self.response_time)
         self.call_time = self.call_time.total_seconds()
         self.content = [resp.content for resp in self.response]
-        print("Request finished at ", datetime.now())
+        # log the completion
+        print("Request {id} finished at ".format(id=self._id), self.call_time)
