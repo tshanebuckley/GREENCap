@@ -343,7 +343,7 @@ def is_longitudinal(project):
 # method to get the records for a project asynchronously
 async def async_get_records(rc_name):
     # get the credentials
-    creds = await async_get_project_config(project = rc_name)
+    creds = await gc_creds.async_get_project_config(project = rc_name)
     # generate the payload
     payload = {
         'token': creds['token'],
