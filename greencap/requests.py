@@ -80,7 +80,7 @@ class REDCapRequest(): # pydantic.BaseModel
         # log the start time
         print("Request {id} started at ".format(id=self._id), self.request_time)
         # execute the request with progress bar
-        [await f for f in tqdm.tqdm(asyncio.as_completed(request_tasks), total=len(request_tasks))]
+        #[await f for f in tqdm.tqdm(asyncio.as_completed(request_tasks), total=len(request_tasks))]
         self.response = await asyncio.gather(*request_tasks)
         # set the response time
         self.response_time = datetime.now()
