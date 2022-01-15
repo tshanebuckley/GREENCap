@@ -309,7 +309,8 @@ def extend_api_calls(project, selection_criteria=None, extended_by=['records'], 
     final_call_list = condense_to_chunks(all_api_calls=extended_call_list_of_dicts, num_chunks=num_chunks)
     # drop any empty api_calls
     final_call_list = [x for x in final_call_list if x != {}]
-    #print(final_call_list)
+    print(final_call_list)
+    print(len(final_call_list))
     # return the list of api requests
     return final_call_list
 
