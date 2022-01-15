@@ -39,6 +39,8 @@ class REDCapRequest(): # pydantic.BaseModel
         self.sleep_time = sleep_time
         # set the status
         self.status = 'queued'
+        # log the queue time
+        print("Request {id} queued at ".format(id=self._id), self.creation_time)
 
     async def run(self):
         # sub function to apply a sleep
@@ -75,6 +77,8 @@ class REDCapRequest(): # pydantic.BaseModel
         self.request_time = datetime.now()
         # set the status to 'running'
         self.status = 'running'
+        # log the start time
+        print("Request {id} finished at ".format(id=self._id), self.request_time)
         # execute the request with progress bar
         [await f for f in tqdm.tqdm(asyncio.as_completed(request_tasks), total=len(request_tasks))]
         self.response = await asyncio.gather(*request_tasks)
@@ -92,7 +96,7 @@ class REDCapRequest(): # pydantic.BaseModel
         self.response_time = str(self.response_time)
         self.call_time = self.call_time.total_seconds()
         self.content = [resp.content for resp in self.response]
-        # log the finish timed
+        # log the finish time
         print("Request {id} finished at ".format(id=self._id), self.response_time)
         # log the runtime
         print("Request {id} finished in {s} seconds".format(id=self._id, s=self.call_time))
