@@ -37,8 +37,8 @@ class REDCapRequest(): # pydantic.BaseModel
         self.creation_time = datetime.now()
         # save the sleep time used per execution of each task
         self.sleep_time = sleep_time
-        # set the completion time as None
-        self.completion_time = None
+        # set the status
+        self.status = 'queued'
 
     async def run(self):
         # sub function to apply a sleep
@@ -46,6 +46,8 @@ class REDCapRequest(): # pydantic.BaseModel
         async def run_fetch(sleep_time, my_coroutine, chunk_num):
             # sleep
             await(asyncio.sleep(sleep_time))
+            # log the chunk started
+            print("Chunk {c} started at {t}".format(c=chunk_num, t=str(datetime.now())))
             # perform the fetch
             fetch_resp = await my_coroutine
             # extract the content from the StreamReader
@@ -90,5 +92,7 @@ class REDCapRequest(): # pydantic.BaseModel
         self.response_time = str(self.response_time)
         self.call_time = self.call_time.total_seconds()
         self.content = [resp.content for resp in self.response]
-        # log the completion
-        print("Request {id} finished at ".format(id=self._id), self.call_time)
+        # log the finish timed
+        print("Request {id} finished at ".format(id=self._id), self.response_time)
+        # log the runtime
+        print("Request {id} finished in {s} seconds".format(id=self._id, s=self.call_time))
