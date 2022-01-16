@@ -17,6 +17,7 @@ import multipart
 # import greencap items
 from greencap import Project as GCProject
 from greencap import utils as gc_utils
+from greencap import creds as gc_creds
 
 # initialize a GREENCap object
 grncap = GCProject()
@@ -35,7 +36,7 @@ async def read_data(project: str, records: Optional[str] = "", arms: Optional[st
         # connect to redcap
         await grncap.async_add_project(project)
     # get  the default chunk size
-    cfg = await get_greencap_config()
+    cfg = await gc_creds.get_greencap_config()
     # run the parsing to get the selection criteria
     selection_criteria = await utils.async_run_selection(project=rc, records=records, arms=arms, events=events, forms=forms, fields=fields)
     # run the request
