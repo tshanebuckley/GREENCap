@@ -64,12 +64,11 @@ class REDCapProject(pydantic.BaseModel):
 
     @pydantic.root_validator(pre=True)
     @classmethod
-    async def check_connection(cls, values):
+    def check_connection(cls, values):
         try:
-            await gc_utils.async_get_records(rc_name=values["name"])
+            redcap.Project(values["url"], values["token"], lazy=True)
         except:
-            raise REDCapConnectError(name=values["name"],
-            message="Unable to connect to REDCap project {name}.".format(name=values["name"]))
+            raise REDCapObjectError(name=values["name"])
         return values
 
 
