@@ -38,7 +38,7 @@ async def read_data(project: str, records: Optional[str] = "", arms: Optional[st
     # get  the default chunk size
     cfg = await gc_creds.async_get_greencap_config()
     # run the parsing to get the selection criteria
-    selection_criteria = await gc_utils.async_run_selection(project=rc, records=records, arms=arms, events=events, forms=forms, fields=fields)
+    selection_criteria = await gc_utils.async_run_selection(project=project, records=records, arms=arms, events=events, forms=forms, fields=fields)
     # run the request
     response = await grncap.exec_request(method='POST', selection_criteria=selection_criteria, rc_name=project, func_name='export_records', num_chunks=cfg['num_chunks'])
     # sub function to operate a generator
