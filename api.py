@@ -29,17 +29,23 @@ app = FastAPI()
 async def read_data(project: str, records: Optional[str] = "", arms: Optional[str] = "", events: Optional[str] = "", forms: Optional[str] = "", fields: Optional[str] = ""):
     # NOTE: If the query string is saved somewhere, then the same pull can be saved, and automated
     # use project name to get url and token from config file
-    cfg = await utils.async_get_project_config(project=project)
+    #cfg = await utils.async_get_project_config(project=project)
     # if the selected REDCap is not already loaded
     if project not in grncap.redcap.keys():
-        # connect to redcap (will currently be blocking)
+        # connect to redcap
         await grncap.async_add_project(project)
-    # run the selection (should be non-blocking)
-    csv = utils.run_selection(project=rc, records=records, arms=arms, events=events, forms=forms, fields=fields)
-    # pipes should be run and potentially parallelized locally on the aggregated dataframe, perhaps utilize dagster here
-    #csv = utils.run_pipes(df=csv, pipes=pipes)
-    # return the resultant csv
-    return csv
+    # get  the default chunk size
+    cfg = await get_greencap_config()
+    # run the parsing to get the selection criteria
+    selection_criteria = await utils.async_run_selection(project=rc, records=records, arms=arms, events=events, forms=forms, fields=fields)
+    # run the request
+    response = await grncap.exec_request(method='POST', selection_criteria=selection_criteria, rc_name=project, func_name='export_records', num_chunks=cfg['num_chunks'])
+    # sub function to operate a generator
+    async def request_response_streamer(response):
+        for item in response:
+            yield item
+    # return the streaming response
+    return StreamingResponse(request_response_streamer(response=response))
     
 ## BELOW HERE: NEED REFACTORED ##
     
