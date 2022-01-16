@@ -19,6 +19,7 @@ from asgiref.sync import sync_to_async, async_to_sync
 from greencap.utils import utils as gc_utils
 from greencap.utils import creds as gc_creds
 from greencap.requests import REDCapRequest
+from greencap.error import REDCapConnectError
 import getpass
 
 # method to create a redcap project
@@ -165,8 +166,8 @@ class Project:
             # run the alterations for _call_api
             setattr(self.redcap[rc_data.name], "_call_api", self._call_api)
         # log the failure
-        except ValidationError as e:
-            print(e.json())
+        except:
+            raise REDCapConnectError(name=name)
 
     '''
     # add a request
