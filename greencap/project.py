@@ -49,13 +49,6 @@ def user_project(name=None, url=None, token=None, cli=False, local=True):
 
     # logic for create, remove, and update functions based on if local or not
 
-# redcap connection error
-class REDCapConnectError(Exception):
-    def __init__(self, name:str, message:str) -> None:
-        self.name = name
-        self. message = message
-        super().__init__(message)
-
 # pydantic BaseClass object for a REDCap project
 class REDCapProject(pydantic.BaseModel):
     url: str
