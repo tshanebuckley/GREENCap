@@ -190,7 +190,7 @@ class Project:
         return request_args
 
     # gets the payloads by extending to all possible calls and then chunking them
-    async def exec_request(self, method, selection_criteria=dict(), extended_by=None, num_chunks=None, rc_name=None, func_name=None, sleep_time=0):
+    async def exec_request(self, method, selection_criteria=dict(), extended_by=None, num_chunks=None, rc_name=None, func_name=None, sleep_time=0, return_type='df'):
         # set some variables defined by the object if not set by the function
         if num_chunks == None:
             num_chunks = self.num_chunks
@@ -237,7 +237,18 @@ class Project:
         print("{n} request(s) have finished.".format(n=str(len(req.content))))
         # drop the payload from the _payloads dict
         self._payloads.pop(_id)
-        # clean the response (we get back a list of json strings, convert to dicts)
-        response = [json.loads(item) for item in req.content]
+        # clean the response as specified by return_type
+        if return_type == 'raw':
+            # return the unmodified response of the REDCapRequest
+            response = req.content
+        if return_type == 'raw_list':
+            # return the raw response
+            response = [json.loads(item) for item in req.content]
+        if return_type == 'json_list':
+            # return a list of the chunked responses
+            response = [json.loads(item) for item in req.content]
+        if return_type == 'df':
+             # return a pandas dataframe (currently just returns the response as is)
+            response = req.content
         # return the response: list of json-read dictionaries
         return response
