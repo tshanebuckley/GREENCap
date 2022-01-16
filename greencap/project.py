@@ -160,28 +160,29 @@ class Project:
             rc_data = create_redcap_project(name)
             # add the project to the dict
             self.redcap[rc_data.name] = redcap.Project(rc_data.url, rc_data.token, name=rc_data.name)
-            # add a .records field that contains all of the values for the def_field
-            self.redcap[rc_data.name].records = self.get_records(rc_name=self.redcap[rc_data.name])
-            # run the alterations for _call_api
-            setattr(self.redcap[rc_data.name], "_call_api", self._call_api)
         # log the failure
         except pydantic.ValidationError as e:
             print(e)
+        # add a .records field that contains all of the values for the def_field
+        #self.redcap[rc_data.name].records = self.get_records(rc_name=self.redcap[rc_data.name])
+        # run the alterations for _call_api
+        setattr(self.redcap[rc_data.name], "_call_api", self._call_api)
 
-    '''
-    # add a request
-    async def exec_request(self, data, method='POST', url=self.curr_url):
+    # method to add a project asyncronously
+    async def async_add_project(self, name):
+        # try to add the project
         try:
-            response = await self._session.request(method=method, url=url, data=data)
-            response.raise_for_status()
-            print(f"Response status ({url}): {response.status}")
-        except HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-        except Exception as err:
-            print(f"An error ocurred: {err}")
-            response_json = await response.json()
-            return response_json
-    '''
+            # use pydantic to create a verified redcap connection
+            rc_data = create_redcap_project(name)
+            # attempt a simple connection for grabbing the records to test the connection
+            await async_get_records(name)
+        # log the failure
+        except:
+            raise REDCapConnectError(name)
+        # add the project to the dict
+        self.redcap[rc_data.name] = redcap.Project(rc_data.url, rc_data.token, name=rc_data.name, lazy=True)
+        # run the alterations for _call_api
+        setattr(self.redcap[rc_data.name], "_call_api", self._call_api)
 
     # gets a payload
     @sync_to_async
