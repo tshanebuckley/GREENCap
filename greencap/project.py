@@ -65,7 +65,7 @@ class REDCapProject(pydantic.BaseModel):
     @classmethod
     def check_connection(cls, values):
         try:
-            redcap.Project(values["url"], values["token"])
+            asyncio.run(gc_utils.async_get_records(rc_name))
         except:
             raise REDCapConnectError(name=values["name"],
             message="Unable to connect to REDCap project {name}.".format(name=values["name"]))
@@ -133,13 +133,19 @@ class Project:
 
     # method to get the list of id records of the defining field of a project
     def get_records(self, rc_name):
-        # NOTE: simple implementation for now that should be made into a coroutine
-        # instead of using base PyCap.
-        # create a PyCap Projects
-        #rc = redcap.Project(self.redcap[rc_name].url, self.redcap[rc_name].token)
         # run a selection to grab the list of records
-        #record_list = gc_utils.run_selection(project=rc, fields=self.redcap[rc_name].def_field, syncronous=True)
         record_list = gc_utils.run_selection(project=rc_name, fields=rc_name.def_field, syncronous=True)
+        # return the records
+        return record_list
+    
+    # method to get the list of id records of the defining field of a project
+    async def async_get_records(self, rc_name):
+        # have the base return value be an empty list
+        record_list = []
+        # if this project has been initialized in the object
+        if rc_name in self.redcap.keys():
+            # get the records
+            record_list = await gc_utils.async_get_records(rc_name)
         # return the records
         return record_list
 
@@ -206,7 +212,7 @@ class Project:
                 selection_criteria[key] = func_defaults[key]
         # if no record names are given, get the record names
         if selection_criteria['records'] == None:
-            selection_criteria['records'] = await gc_utils.async_get_records(rc_name)
+            selection_criteria['records'] = await self.get_records(rc_name)
         # log that the payloads are being generated
         print("Generating payload(s).")
         # get the api calls
