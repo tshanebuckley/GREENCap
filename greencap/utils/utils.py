@@ -342,7 +342,7 @@ def is_longitudinal(project):
         return False
 
 # method to return if a project is longitudinal or not asynchronously
-async def async_is_longitudinal(project):
+async def async_is_longitudinal(rc_name):
     # get the credentials
     creds = await gc_creds.async_get_project_config(project = rc_name)
     # generate the payload
