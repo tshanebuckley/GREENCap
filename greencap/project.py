@@ -166,8 +166,8 @@ class Project:
             # run the alterations for _call_api
             setattr(self.redcap[rc_data.name], "_call_api", self._call_api)
         # log the failure
-        except:
-            raise REDCapConnectError(name=name)
+        except pydantic.ValidationError as e:
+            print(e)
 
     '''
     # add a request
