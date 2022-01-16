@@ -237,7 +237,7 @@ class Project:
         print("{n} request(s) have finished.".format(n=str(len(req.content))))
         # drop the payload from the _payloads dict
         self._payloads.pop(_id)
-        # clean the response (we get back a lis of json strings)
-        
-        # return the response
-        return req
+        # clean the response (we get back a list of json strings, convert to dicts)
+        response = [json.loads(item) for item in req.content]
+        # return the response: list of json-read dictionaries
+        return response
