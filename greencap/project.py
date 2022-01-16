@@ -168,7 +168,7 @@ class Project:
             # use pydantic to create a verified redcap connection
             rc_data = create_redcap_project(name)
             # attempt a simple connection for grabbing the records to test the connection
-            await async_get_records(name)
+            await self.async_get_records(name)
         # log the failure
         except:
             raise REDCapConnectError(name)
