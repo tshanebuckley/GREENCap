@@ -341,6 +341,34 @@ def is_longitudinal(project):
     else:
         return False
 
+# method to return if a project is longitudinal or not asynchronously
+async def async_is_longitudinal(project):
+    # get the credentials
+    creds = await gc_creds.async_get_project_config(project = rc_name)
+    # generate the payload
+    payload = {
+        'token': creds['token'],
+        'content': 'project',
+        'format': 'json',
+        'returnFormat': 'json'
+    }
+    # run a basic request to fetch these ids
+    async with aiohttp.ClientSession() as session:
+        async with session.post(creds['url'], data=payload) as response:
+            resp = await response.text()
+            print(response)
+    # clean the result into a dict
+    resp_dict = json.loads(resp)
+    # get the ids only from the response
+    is_long_int = resp_dict['is_longitudinal']
+    # convert the response integer to a boolean
+    if is_long_int == 1:
+        # return True
+        return True
+    elif is_long_int == 0:
+        # return False
+        return False
+
 # method to get the records for a project asynchronously
 async def async_get_records(rc_name):
     # get the credentials
@@ -364,7 +392,7 @@ async def async_get_records(rc_name):
     async with aiohttp.ClientSession() as session:
         async with session.post(creds['url'], data=payload) as response:
             resp = await response.text()
-            print(response)
+            #print(response)
     # clean the result into a list
     resp_dict = json.loads(resp)
     # get the ids only from the response
