@@ -18,6 +18,7 @@ setup(name='greencap',
       install_requires=[
             "pycap",
             "fastapi",
+            "uvicorn[standard]",
             "pydantic",
             "pyyaml",
             "aiohttp",
