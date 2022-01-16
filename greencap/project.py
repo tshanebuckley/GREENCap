@@ -228,7 +228,7 @@ class Project:
         # save this new Payload object within the class
         self._payloads[_id] = ploads
         # determine if the project is longitudinal
-        long = gc_utils.is_longitudinal(self.redcap['bsocial'])
+        long = await gc_utils.async_is_longitudinal(rc_name)
         # create the request
         req = REDCapRequest(_id=_id, payloads=ploads, longitudinal=long, arms=None, events=None, sleep_time=sleep_time)
         # submit the request
