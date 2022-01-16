@@ -22,14 +22,28 @@ import pathlib
 from greencap.utils import creds as gc_creds
 
 # covenience function for prunning a parsed selection
-def run_selection(project = None, records: Optional[str] = "", arms: Optional[str] = "", events: Optional[str] = "", forms: Optional[str] = "", fields: Optional[str] = "", syncronous=False, num_chunks=50):
+async def async_run_selection(project = None, records: Optional[str] = "", arms: Optional[str] = "", events: Optional[str] = "", forms: Optional[str] = "", 
+                        fields: Optional[str] = "",  num_chunks=30):
+    # Initialize chosen items as empty lists
     chosen_fields = [] # project.def_field
     chosen_forms = []
     chosen_records = []
+    # if records are selected
     if records != "":
+        # parse the records
         chosen_records = records.split(';')
+    # if no records are selected
+    else:
+        # select all records
+        chosen_records = await async_get_records(rc_name=project)
+     # if forms are selected
     if forms != "":
+        # parse the forms
         chosen_forms = forms.split(';')
+    # otherwise:
+    else:
+        # select all forms
+        chosen_forms = None
     # if fields are given for the selection
     if fields != "":
         # add the optional selections
@@ -38,10 +52,6 @@ def run_selection(project = None, records: Optional[str] = "", arms: Optional[st
         for selection in selected_fields:
             # determine if the selection is a single field, a selection of fields, or an entire form
             is_type = field_or_selection(project=project, item=selection)
-            # if it is whole form
-            #if is_type == "form":
-            #    # add the form selection
-            #    chosen_forms.append(selection)
             # if it is a single field
             if is_type == "field":
                 # add the single field selection
@@ -54,93 +64,14 @@ def run_selection(project = None, records: Optional[str] = "", arms: Optional[st
                 parsed_fields = parse_field_single_selection(selection_item = split_str["form_name"], selection_str = split_str["select_str"])
                 # add the fields
                 chosen_fields.extend(parsed_fields)
-    # initialize the df as an empty list
-    df = []
-    # if running an asynchronous call
-    if syncronous == False:
-        # if records, fields, or forms were not selected, "opt-in" for all of that criteria
-        # NOTE: PyCap opts-in by default, but we must set these criteria manually to setup asynchronous calls
-        if chosen_records == []:
-            # get the records
-            chosen_records = run_selection(project=project, fields=project.def_field, syncronous=True)
-        if chosen_fields == [] and chosen_forms == []:
-            # get all of the fields
-            chosen_fields = project.field_names
-        print("CHOSEN RECORDS:")
-        print(chosen_records)
-        # get the kwargs
-        selection_criteria = {"records": chosen_records, "fields": chosen_fields, "forms": chosen_forms}
-        # get all of the possible single item api calls
-        api_calls = extend_api_calls(project, selection_criteria=selection_criteria, num_chunks=num_chunks)
-        #print(api_calls)
-        # run the api calls asynchronously
-        results = asyncio.run(run_pycap_requests(project=project, function_name='export_records', api_calls=api_calls))
-        #print(results)
-        #print(len(results))
-        #print(type(results))
-        #print(results[0])
-        # rename to match downstream logic
-        df = results
-    # if a syncronous api call is desired single call
-    elif syncronous == True:
-        # pull data using PyCap, convert to a pandas dataframe: will eventually be deprecated by async records call
-        df = project.export_records(records=chosen_records, fields=chosen_fields, forms=chosen_forms)
-        # wrap into a list of length 1 to follow iterative logic that follow
-        df = [df]
-    #df = clean_content()
-    #-----------------------
-    # at this point, return the df if it is empty
-    if df == [[]]:
-        df = dict()
-        json.dumps(df)
-        df = json.loads(df)
-        return df
-    # TODO: reformat the below to handle the single return dict (as given), or run each return dict and then merge
-    print("Finished getting requests, trimming and elongating if longitudinal...")
-    # if the project is longitudinal
-    if is_longitudinal(project):
-        # trin the longitudinal study of unwanted data
-        df = trim_longitudial_project(df=df, arms=arms, events=events)
-    # if the df is a list with a single dictionary
-    if isinstance(df, dict):
-        # convert the dictionary to a dataframe
-        df = pd.DataFrame.from_dict(df)
-    # if the df is a list of dictionaries
-    elif isinstance(df, list):
-        # convert the list of dictionaries to a list of dataframes
-        df = [pd.DataFrame.from_dict(x) for x in df]
-        # if there are multiple dataframe in the list
-        if len(df) > 1:
-            # merge the dataframes TODO: parallelize this merge
-            df = reduce(lambda x, y: pd.merge(x, y, how='outer', suffixes=(False, False)), df)
-        # otherwise
-        else:
-            df = df[0]
-    #print(df)
-    # if the study is longitudinal
-    if is_longitudinal(project):
-        # reformat to a wide dataframe
-        df = df.pivot(index = project.def_field, columns = "redcap_event_name") #chosen_fields[0]
-        collapsed_cols = []
-        for col in df.columns:
-            collapsed_cols.append(col[0] + '#' + col[1]) # '#' used to separate field and event
-        df.columns = collapsed_cols
-    #_______________________
-    #print(df)
-    # TODO: implement pipe running here (with its own cache?)
-    # here, if the dataframe is empty and the only chosen field is the def_field (allows returning only records names)
-    if df.empty and chosen_fields == [project.def_field]:
-        # then set the df to a set of the records
-        df = tuple(df.index)
-        # convert the set into a json string
-        df = json.dumps(df)
     # otherwise
     else:
-        # convert back to json and return
-        df = df.to_json()
-    df = json.loads(df)
-    #print(df)
-    return df
+        # select all fields
+        chosen_fields = None
+    # get the kwargs
+    selection_criteria = {"records": chosen_records, "fields": chosen_fields, "forms": chosen_forms}
+    # return the selection_criteria
+    return selection_criteria
 
 # method to drop arms from a returned api call (dict)
 def drop_arms(arms_list, df):
