@@ -2,7 +2,6 @@
 from setuptools import setup, find_packages
 import os
 import requests
-import io
 
 # get the user's home directory
 HOME = os.path.expanduser('~')
@@ -48,7 +47,7 @@ def github_copy_file(url, github_path, system_path):
     # get the content of the file
     file_content = requests.get(url + github_path).content
     # get the file text
-    file_text = io.StringIO(file_content.decode('utf-8'))
+    file_text = file_content.decode('utf-8')
     # get the file name
     file_name = os.path.basename(github_path)
     # make the path to where the file should be saved
