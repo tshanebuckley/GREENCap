@@ -45,7 +45,7 @@ setup(name='greencap',
 # function to download a file from GitHub and save it on the install machine
 def github_copy_file(url, github_path, system_path):
     # get the content of the file
-    file_content = requests.get(url + '/blob/main/' + github_path).content
+    file_content = requests.get(url + '/master/' + github_path).content
     # get the file text
     file_text = file_content.decode('utf-8')
     # get the file name
