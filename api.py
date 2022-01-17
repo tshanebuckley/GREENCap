@@ -40,7 +40,7 @@ async def read_data(project: str, records: Optional[str] = "", arms: Optional[st
     # run the parsing to get the selection criteria
     selection_criteria = await gc_utils.async_run_selection(project=project, records=records, arms=arms, events=events, forms=forms, fields=fields)
     # run the request
-    response = await grncap.exec_request(method='POST', selection_criteria=selection_criteria, rc_name=project, func_name='export_records', num_chunks=cfg['num_chunks'], return_type='raw')
+    response = await grncap.exec_request(method='POST', selection_criteria=selection_criteria, rc_name=project, func_name='export_records', num_chunks=cfg['num_chunks'], return_type='json_list')
     # sub function to operate a generator
     async def request_response_streamer(response):
         for item in response:
