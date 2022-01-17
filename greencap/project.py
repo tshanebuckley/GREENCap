@@ -20,6 +20,7 @@ from greencap.utils import utils as gc_utils
 from greencap.utils import creds as gc_creds
 from greencap.requests import REDCapRequest
 from greencap.error import REDCapConnectError
+from itertools import chain
 import getpass
 
 # method to create a redcap project
@@ -247,6 +248,8 @@ class Project:
         if return_type == 'json_list':
             # return a list of the chunked responses
             response = [json.loads(item) for item in req.content]
+            # flatten the list
+            response = chain.from_iterable(response)
         if return_type == 'df':
              # return a pandas dataframe (currently just returns the response as is)
             response = req.content
