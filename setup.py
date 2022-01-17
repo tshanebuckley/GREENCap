@@ -58,10 +58,10 @@ def github_copy_file(url, github_path, system_path):
     os.makedirs(system_path, exist_ok=True)
     # get the system file path
     system_file_path = system_path + '/' + file_name
-    # save the file
-    with open(system_file_path, 'w') as file:
-        # if the file does not already exist
-        if os.path.exists(system_file_path) == False:
+     # if the file does not already exist
+    if os.path.exists(system_file_path) == False:
+        # save the file
+        with open(system_file_path, 'w') as file:
             # write the file
             file.write(file_text)
 
