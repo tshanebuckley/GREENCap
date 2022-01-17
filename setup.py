@@ -51,7 +51,7 @@ def github_copy_file(url, github_path, system_path):
     # get the file name
     file_name = os.path.basename(github_path)
     # make the path to where the file should be saved
-    os.makedirs(system_path)
+    os.makedirs(system_path, exist_ok=True)
     # save the file
     with open(system_path + '/' + file_name, 'w') as file:
         # write the file
@@ -64,6 +64,6 @@ github_copy_file(URL, 'open_dtale.py', HOME + '/.greencap/shiny')
 github_copy_file(URL, 'api.py', HOME + '/.greencap/api')
 
 # Make directories for the user, groups, and projects
-os.makedirs(HOME + '/.greencap/projects')
-os.makedirs(HOME + '/.greencap/users')
-os.makedirs(HOME + '/.greencap/groups')
+os.makedirs(HOME + '/.greencap/projects', exist_ok=True)
+os.makedirs(HOME + '/.greencap/users', exist_ok=True)
+os.makedirs(HOME + '/.greencap/groups', exist_ok=True)
