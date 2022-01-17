@@ -250,6 +250,7 @@ class Project:
             response = [json.loads(item) for item in req.content]
             # flatten the list
             response = chain.from_iterable(response)
+            print(response[0])
         if return_type == 'df':
              # return a pandas dataframe (currently just returns the response as is)
             response = req.content
