@@ -56,10 +56,14 @@ def github_copy_file(url, github_path, system_path):
     file_name = os.path.basename(github_path)
     # make the path to where the file should be saved
     os.makedirs(system_path, exist_ok=True)
+    # get the system file path
+    system_file_path = system_path + '/' + file_name
     # save the file
-    with open(system_path + '/' + file_name, 'w') as file:
-        # write the file
-        file.write(file_text)
+    with open(system_file_path, 'w') as file:
+        # if the file does not already exist
+        if os.path.exists(system_file_path) == False:
+            # write the file
+            file.write(file_text)
 
 # Downloading base config, shiny app, fastapi, and setup .greencap and other folders under the home directory
 github_copy_file(RAW, 'greencap_config.yaml', HOME + '/.greencap')
