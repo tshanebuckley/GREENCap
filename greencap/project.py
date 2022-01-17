@@ -246,6 +246,9 @@ class Project:
             # return the raw response
             response = [json.loads(item) for item in req.content]
         if return_type == 'json_list':
+            print("RAW")
+            print(type(response))
+            print(type(response[0]))
             # return a list of the chunked responses
             response = [json.loads(item) for item in req.content]
             print("BEFORE FLATTEN")
