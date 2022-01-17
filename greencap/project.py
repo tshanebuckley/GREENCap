@@ -248,9 +248,16 @@ class Project:
         if return_type == 'json_list':
             # return a list of the chunked responses
             response = [json.loads(item) for item in req.content]
+            print("BEFORE FLATTEN")
+            print(response[0])
+            print('--------------------')
+            print(response[1])
             # flatten the list
             response = chain.from_iterable(response)
+            print("AFTER FLATTEN")
             print(response[0])
+            print('--------------------')
+            print(response[1])
         if return_type == 'df':
              # return a pandas dataframe (currently just returns the response as is)
             response = req.content
