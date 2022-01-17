@@ -5,8 +5,12 @@ import requests
 
 # get the user's home directory
 HOME = os.path.expanduser('~')
-# url of this repo
-URL = 'https://github.com/tshanebuckley/GREENCap'
+# GitHub path
+GH_PATH = 'github.com/tshanebuckley/GREENCap'
+# raw version url 
+RAW = 'https://raw.' + GH_PATH
+# GitHub url
+URL = 'https://' + GH_PATH
 
 # run setup
 setup(name='greencap',
@@ -58,10 +62,10 @@ def github_copy_file(url, github_path, system_path):
         file.write(file_text)
 
 # Downloading base config, shiny app, fastapi, and setup .greencap and other folders under the home directory
-github_copy_file(URL, 'greencap_config.yaml', HOME + '/.greencap')
-github_copy_file(URL, 'redcap_webapp.R', HOME + '/.greencap/shiny')
-github_copy_file(URL, 'open_dtale.py', HOME + '/.greencap/shiny')
-github_copy_file(URL, 'api.py', HOME + '/.greencap/api')
+github_copy_file(RAW, 'greencap_config.yaml', HOME + '/.greencap')
+github_copy_file(RAW, 'redcap_webapp.R', HOME + '/.greencap/shiny')
+github_copy_file(RAW, 'open_dtale.py', HOME + '/.greencap/shiny')
+github_copy_file(RAW, 'api.py', HOME + '/.greencap/api')
 
 # Make directories for the user, groups, and projects
 os.makedirs(HOME + '/.greencap/projects', exist_ok=True)
