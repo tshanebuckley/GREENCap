@@ -252,7 +252,7 @@ class Project:
             print(type(response))
             print(type(response[0]))
             # flatten the list
-            response = chain.from_iterable(response)
+            response = [j for i in response for j in i]
             print("AFTER FLATTEN")
             print(type(response))
             print(type(response[0]))
