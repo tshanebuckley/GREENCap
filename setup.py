@@ -58,7 +58,7 @@ def github_copy_file(url, github_path, system_path):
         file.write(file_text)
 
 # Downloading base config, shiny app, fastapi, and setup .greencap and other folders under the home directory
-github_copy_file(URL, 'greencap_conig.yaml', HOME + '/.greencap')
+github_copy_file(URL, 'greencap_config.yaml', HOME + '/.greencap')
 github_copy_file(URL, 'redcap_webapp.R', HOME + '/.greencap/shiny')
 github_copy_file(URL, 'open_dtale.py', HOME + '/.greencap/shiny')
 github_copy_file(URL, 'api.py', HOME + '/.greencap/api')
