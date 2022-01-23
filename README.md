@@ -26,6 +26,7 @@ This behavior is fine for the SDK, but will act as a bottleneck at scale.
 2. Have the client recieve middleware requests asynchronously (this should be simple given the use of the ijson package).
 3. Refactor previous synchronous definitions to ustilize asncyio.run() to run their asynchronous versions.
 4. Implement the pipeline runner utilizing Dagster
+
     A. First, running pipelines on the local machine.
     
     B. Second, running pipelines via Slurm on an HPC.
