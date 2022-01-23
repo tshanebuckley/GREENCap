@@ -33,7 +33,7 @@ This behavior is fine for the SDK, but will act as a bottleneck at scale.
     
     C. Third, utilize MQ to go to scale.
     
-    This is deliverable is inspired by following two project:
+    This is deliverable is inspired by the following two project:
     
         DAX: https://github.com/VUIIS/dax
         
