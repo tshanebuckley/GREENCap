@@ -191,7 +191,7 @@ class Project:
         return request_args
 
     # gets the payloads by extending to all possible calls and then chunking them
-    async def exec_request(self, method, selection_criteria=dict(), extended_by=None, num_chunks=None, rc_name=None, func_name=None, sleep_time=0, return_type='df'):
+    async def exec_request(self, method, selection_criteria=dict(), extended_by=None, num_chunks=None, rc_name=None, func_name=None, sleep_time=0, return_type='json_list'):
         # set some variables defined by the object if not set by the function
         if num_chunks == None:
             num_chunks = self.num_chunks
