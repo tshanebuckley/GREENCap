@@ -76,7 +76,7 @@ r = asyncio.run(gc.exec_request(method='POST', selection_criteria={'fields': {'f
 
 Project JSON files must be stored under the following path:
 ```bash
-~/.greencap/projects
+~/.greencap/projects/<project_name>.json
 ```
 
 And should be defined as follows:
