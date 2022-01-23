@@ -39,7 +39,7 @@ This behavior is fine for the SDK, but will act as a bottleneck at scale.
         
         Balsam: https://github.com/argonne-lcf/balsam
         
-    Hoping that balsam could be utilized to 
+    Hoping that Balsam could be utilized to meet these goals.
     
 5. Implement basic user authentification on middleware requests.
 6. Finish an RShiny app front-end utilizing reticulate to utilize the Python SDK.
