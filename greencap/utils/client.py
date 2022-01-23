@@ -1,29 +1,34 @@
 # Currently is a simple  script to pull data into a file.
 # Will want to build some type of function for converting raw data streamed from the API into json/dict or csv/dataframe.
-import json_stream.requests
+import ijson
 import urllib.request
 import pandas as pd
+import aiohttp
 
 # method to obtain the streamed json response from a resquest as a dictionary
-# Have been testing with multiple packages. So far, urllib and ijson seem to be
-# the best option considering that ijson has async support. Need to learn more about
-# returned data to finialize a method for returning large json responses. 
-# Currently getting this error:
-# ijson.common.IncompleteJSONError: parse error: premature EOF
-#
-#                     (right here) ------^
-# Once this is complete, should be able to use this to return a pandas dataframe and
-# return the result to RShiny app using reticulate.
-# Went back to json_stream since ijson error was proving to be difficult
 def get_redcap_json_data(url):
-    # open 
+    # make the url request
     with urllib.request.urlopen(url) as response:
-        # get a persistent (use memory) json object
-        json_data = json_stream.load(response, persistent=True)
-        # read all data into memory
-        json_data.read_all()
-        # convert the response into a list of OrderedDicts
-        oDict_list = [x._data for x in json_data]
+        # intialize a json list
+        json_data = list()
+        # create a generator to recieve the streamed response
+        for obj in ijson.items(response, '', multiple_values=True):
+            # get all of the data from the generator
+            json_data.append(obj)
+    # flatten the list
+    json_data = [j for i in json_data for j in i]
+    # return the data
+    return json_data
+
+# method to get the redcap json data asynchronously
+def async async_get_redcap_json_data(url):
+    async with aiohttp.ClientSession() as client:
+        async with client.get(url) as response:
+            json_data = json_stream.load(response, persistent=True)
+            # read all data into memory
+            json_data.read_all()
+            # convert the response into a list of OrderedDicts
+            oDict_list = [x._data for x in json_data]
     return oDict_list
 
 # method to get the the url response as 
