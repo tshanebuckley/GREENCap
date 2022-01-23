@@ -27,12 +27,19 @@ This behavior is fine for the SDK, but will act as a bottleneck at scale.
 3. Refactor previous synchronous definitions to ustilize asncyio.run() to run their asynchronous versions.
 4. Implement the pipeline runner utilizing Dagster
     A. First, running pipelines on the local machine.
+    
     B. Second, running pipelines via Slurm on an HPC.
+    
     C. Third, utilize MQ to go to scale.
+    
     This is deliverable is inspired by following two project:
+    
         DAX: https://github.com/VUIIS/dax
+        
         Balsam: https://github.com/argonne-lcf/balsam
+        
     Hoping that balsam could be utilized to 
+    
 5. Implement basic user authentification on middleware requests.
 6. Finish an RShiny app front-end utilizing reticulate to utilize the Python SDK.
 7. Implememt a file-server protocol, allowing the middleware to handle file storage for the client via REDCap.
