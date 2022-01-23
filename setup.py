@@ -28,6 +28,7 @@ setup(name='greencap',
     install_requires=[
           "pycap",
           "fastapi",
+          "typer",
           "uvicorn[standard]",
           "pydantic",
           "pyyaml",
