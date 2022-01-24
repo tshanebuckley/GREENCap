@@ -39,7 +39,9 @@ This behavior is fine for the SDK, but will act as a bottleneck at scale.
         
         Balsam: https://github.com/argonne-lcf/balsam
         
-    Hoping that Balsam could be utilized to meet these goals.
+    Hoping that Balsam could be utilized to meet these goals. Though is may just be desired to allow some
+    SQL, R, or Python manipulation as part of the API request. Realistically, this may be best to allow this
+    project to be part of an ELT pipeline.
     
 5. Implement basic user authentification on middleware requests.
 6. Finish an RShiny app front-end utilizing reticulate to utilize the Python SDK.
