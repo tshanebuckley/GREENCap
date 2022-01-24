@@ -99,3 +99,42 @@ uvicorn api:app
 ```
 
 ## TODO: Complete the client SDK and CLI
+
+Currently to get data from the middleware api, use the following Python script or execute in a REPL:
+
+```python
+import urllib.request
+import pandas as pd
+import ijson
+
+# method to obtain the streamed json response from a resquest as a dictionary
+def get_redcap_json_data(url):
+    # make the url request
+    with urllib.request.urlopen(url) as response:
+        # intialize a json list
+        json_data = list()
+        # create a generator to recieve the streamed response
+        for obj in ijson.items(response, '', multiple_values=True):
+            # get all of the data from the generator
+            json_data.append(obj)
+    # flatten the list
+    json_data = [j for i in json_data for j in i]
+    # return the data
+    return json_data
+ 
+# method to get the the url response as 
+def get_redcap_dataframe_data(url):
+    # gets the url response as a list of OrderedDict
+    json_list = get_redcap_json_data(url)
+    # convert to a pandas dataframe
+    df = pd.DataFrame.from_records(json_list)
+    # return the pandas dataframe
+    return df
+    
+# example url
+url = "http://localhost:8000/redcap/bsocial"
+
+# run the function
+df = get_redcap_dataframe_data(url)
+
+```
