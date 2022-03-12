@@ -1,4 +1,5 @@
 # GREENCap
+
 Asynchronous Python SDK for working with REDCap data.
 
 Currently, this repo includes a Python SDK that wraps PyCap, but runs asynchronous REDCap requests, a FastAPI server that utilizes the asyncronous SDK, and an RShiny frontend.
@@ -6,6 +7,11 @@ Currently, this repo includes a Python SDK that wraps PyCap, but runs asynchrono
 This is currently being built-out to function as a Python SDK with a self-container desktop application provided by the API and Shiny App.
 
 After this initial goal is reached, the project will be scaled-up to operate as a middleware beteen a REDCap instance and a client.
+
+## ⚠️ Update ⚠️
+
+The asynchronous implementation of this project is going to be integrated into PyCap itself instead if wrapping a PyCap Project with a 
+custom implementation. This project is likely to recieve a heavy re-work to solely focus on the middleware REST API afterwards. 
 
 ## Current Goals of this Repo
 
